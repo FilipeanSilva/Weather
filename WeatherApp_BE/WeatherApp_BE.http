@@ -1,6 +1,0 @@
-@WeatherApp_BE_HostAddress = http://localhost:5103
-
-GET {{WeatherApp_BE_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
