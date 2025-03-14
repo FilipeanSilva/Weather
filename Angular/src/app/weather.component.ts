@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';  // ✅ Import HttpClientModule
+import { HttpClientModule } from '@angular/common/http';
 import { WeatherService } from './weather.service';
 
 @Component({
   selector: 'app-weather',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],  // ✅ Add HttpClientModule here
+  imports: [CommonModule, FormsModule, HttpClientModule],  
   templateUrl: './weather.component.html',
   styleUrls: ['./weather.component.css'],
-  providers: [WeatherService]  // ✅ Provide WeatherService if not already provided
+  providers: [WeatherService]  
 })
 export class WeatherComponent {
   cityName: string = '';
@@ -24,9 +24,9 @@ export class WeatherComponent {
       return;
     }
 
-    this.weatherService.getWeatherByCity(this.cityName).subscribe(
-      data => this.weatherData = data,
-      error => alert('Error fetching weather data.')
-    );
+    this.weatherService.getWeatherByCity(this.cityName).subscribe({
+      next: data => this.weatherData = data,
+      error: error => alert('Error fetching weather data.')
+    });
   }
 }
