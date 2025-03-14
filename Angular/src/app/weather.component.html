@@ -1,14 +1,64 @@
-<div class="container">
-  <h2>Get Weather by City</h2>
-  
-  <input type="text" [(ngModel)]="cityName" placeholder="Enter city name" />
-  <button (click)="getWeather()">Get Weather</button>
+<div class="weather-container">
+  <div class="weather-card">
+    <h2 class="weather-title">Weather Forecast</h2>
+    
+    <div class="search-container">
+      <input 
+        type="text" 
+        [(ngModel)]="cityName" 
+        placeholder="Enter city name" 
+        class="search-input"
+        (keyup.enter)="getWeather()" />
+      <button (click)="getWeather()" class="search-button">
+        <i class="fas fa-search"></i> Get Weather
+      </button>
+    </div>
 
-  <div *ngIf="weatherData">
-    <h3>Weather Data</h3>
-    <p>Temperature: {{ weatherData.current_weather.temperature }}°C</p>
-    <p>Wind Speed: {{ weatherData.current_weather.windspeed }} km/h</p>
+    <div *ngIf="weatherData" class="weather-results">
+      <div class="weather-header">
+        <h3>{{ currentCity }}</h3>
+        <span class="date">{{ today | date:'fullDate' }}</span>
+      </div>
 
-    <pre>{{ weatherData | json }}</pre>
+      <div class="weather-info">
+        <div class="weather-primary">
+          <div class="temperature">
+            {{ weatherData.current_weather.temperature }}°C
+          </div>
+          <div class="conditions" *ngIf="weatherData.current_weather.weathercode">
+            <i [ngClass]="getWeatherIcon(weatherData.current_weather.weathercode)"></i>
+            {{ getWeatherDescription(weatherData.current_weather.weathercode) }}
+          </div>
+        </div>
+
+        <div class="weather-details">
+          <div class="detail-item">
+            <span class="detail-label">Wind Speed</span>
+            <span class="detail-value">{{ weatherData.current_weather.windspeed }} km/h</span>
+          </div>
+          <div class="detail-item" *ngIf="weatherData.current_weather.winddirection">
+            <span class="detail-label">Wind Direction</span>
+            <span class="detail-value">{{ getWindDirection(weatherData.current_weather.winddirection) }}</span>
+          </div>albufeira
+          <div class="detail-item" *ngIf="weatherData.current_weather.humidity">
+            <span class="detail-label">Humidity</span>
+            <span class="detail-value">{{ weatherData.current_weather.humidity }}%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="weather-advanced">
+        <button (click)="showAdvanced = !showAdvanced" class="toggle-button">
+          {{ showAdvanced ? 'Hide' : 'Show' }} Advanced Data
+        </button>
+        <div *ngIf="showAdvanced" class="advanced-data">
+          <pre>{{ weatherData | json }}</pre>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
   </div>
 </div>
