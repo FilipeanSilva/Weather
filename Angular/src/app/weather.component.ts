@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { WeatherService } from '../weather.service';
+import { HttpClientModule } from '@angular/common/http';  // ✅ Import HttpClientModule
+import { WeatherService } from './weather.service';
 
 @Component({
   selector: 'app-weather',
-  standalone: true,  // <-- Make it standalone
-  imports: [CommonModule, FormsModule],  // <-- Import CommonModule & FormsModule
+  standalone: true,
+  imports: [CommonModule, FormsModule, HttpClientModule],  // ✅ Add HttpClientModule here
   templateUrl: './weather.component.html',
-  styleUrls: ['./weather.component.css']
+  styleUrls: ['./weather.component.css'],
+  providers: [WeatherService]  // ✅ Provide WeatherService if not already provided
 })
 export class WeatherComponent {
   cityName: string = '';
