@@ -63,8 +63,19 @@ namespace WeatherApp.Controllers
                     return NotFound("No coordinates found for the given city.");
                 }
 
-                Console.WriteLine($"First result: Lat={results[0].Lat}, Lon={results[0].Lon}");
-                return Ok(results.First());  // Return the first match
+                //Console.WriteLine($"First result: Lat={results[0].Lat}, Lon={results[0].Lon}");
+                //return Ok(results.First());  // Return the first match
+
+                string weatherUrl = $"{WeatherApiUrl}?latitude={results[0].Lat}&longitude={results[0].Lon}&current_weather=true";
+                HttpResponseMessage weatherResponse = await _httpClient.GetAsync(weatherUrl);
+
+                if (!weatherResponse.IsSuccessStatusCode)
+                    return BadRequest("Error fetching weather data.");
+
+                var weatherData = await weatherResponse.Content.ReadAsStringAsync();
+                Console.WriteLine($"weatherData: {weatherData}");
+
+                return Ok(weatherData);
             }
         }
 

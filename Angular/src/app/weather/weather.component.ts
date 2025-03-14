@@ -1,35 +1,30 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // <-- Import CommonModule
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { WeatherService } from '../weather.service';
 
 @Component({
   selector: 'app-weather',
-  standalone: true, // Standalone component
-  imports: [CommonModule], // <-- Add this here
+  standalone: true,  // <-- Make it standalone
+  imports: [CommonModule, FormsModule],  // <-- Import CommonModule & FormsModule
   templateUrl: './weather.component.html',
   styleUrls: ['./weather.component.css']
 })
 export class WeatherComponent {
+  cityName: string = '';
   weatherData: any;
-  convertedTemp: any;
 
   constructor(private weatherService: WeatherService) {}
 
-  getWeatherSync(): void {
-    this.weatherService.getWeatherSync().subscribe(data => {
-      this.weatherData = data;
-    });
-  }
+  getWeather(): void {
+    if (!this.cityName.trim()) {
+      alert('Please enter a city name.');
+      return;
+    }
 
-  getWeatherAsync(): void {
-    this.weatherService.getWeatherAsync().subscribe(data => {
-      this.weatherData = data;
-    });
-  }
-
-  convertTemperature(celsius: number): void {
-    this.weatherService.convertTemperature(celsius).subscribe(data => {
-      this.convertedTemp = data;
-    });
+    this.weatherService.getWeatherByCity(this.cityName).subscribe(
+      data => this.weatherData = data,
+      error => alert('Error fetching weather data.')
+    );
   }
 }

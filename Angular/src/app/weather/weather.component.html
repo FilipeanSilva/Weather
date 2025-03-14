@@ -1,19 +1,14 @@
 <div class="container">
-    <h2>Weather Data</h2>
-    <button (click)="getWeatherSync()">Fetch Sync</button>
-    <button (click)="getWeatherAsync()">Fetch Async</button>
-    
-    <div *ngIf="weatherData">
-      <p>Temperature: {{ weatherData.current_weather.temperature }}°C</p>
-      <p>Wind Speed: {{ weatherData.current_weather.windspeed }} km/h</p>
-    </div>
+  <h2>Get Weather by City</h2>
   
-    <h2>Convert Temperature</h2>
-    <input type="number" #celsiusInput placeholder="Enter Celsius" />
-    <button (click)="convertTemperature(+celsiusInput.value)">Convert</button>
-    
-    <div *ngIf="convertedTemp">
-      <p>{{ convertedTemp.Celsius }}°C = {{ convertedTemp.Fahrenheit }}°F</p>
-    </div>
+  <input type="text" [(ngModel)]="cityName" placeholder="Enter city name" />
+  <button (click)="getWeather()">Get Weather</button>
+
+  <div *ngIf="weatherData">
+    <h3>Weather Data</h3>
+    <p>Temperature: {{ weatherData.current_weather.temperature }}°C</p>
+    <p>Wind Speed: {{ weatherData.current_weather.windspeed }} km/h</p>
+
+    <pre>{{ weatherData | json }}</pre>
   </div>
-  
+</div>
