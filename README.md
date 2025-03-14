@@ -18,8 +18,7 @@ and then fetches **real-time weather data** from **Open-Meteo API**.
 ---
 
 ## 📸 Screenshot
-> *(Include a screenshot of your app here)*
-
+![Weather App Screenshot](Screenshots/image.png)
 ---
 
 ## 🛠️ Installation & Setup
