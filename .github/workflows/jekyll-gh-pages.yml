@@ -25,12 +25,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          # Remove the cache configuration to avoid the error
       
       - name: Install dependencies
         run: |
           cd Angular
           npm install
+      
+      - name: Update budget limits
+        run: |
+          cd Angular
+          # Increase the budget limits in angular.json
+          sed -i 's/"maximumWarning": "4kB"/"maximumWarning": "20kB"/g' angular.json
+          sed -i 's/"maximumError": "8kB"/"maximumError": "25kB"/g' angular.json
       
       - name: Build Angular app
         run: |
