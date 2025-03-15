@@ -1,4 +1,4 @@
-name: Deploy Weather App to GitHub Pages
+name: Deploy Angular App to GitHub Pages
 
 on:
   push:
@@ -21,56 +21,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       
-      # Setup and build C# backend
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '8.0.x'
-      
-      - name: Restore C# dependencies
-        run: |
-          cd WeatherApp_BE
-          dotnet restore
-      
-      - name: Build C# project
-        run: |
-          cd WeatherApp_BE
-          dotnet build --configuration Release
-      
-      - name: Publish C# project
-        run: |
-          cd WeatherApp_BE
-          dotnet publish --configuration Release --output ./publish
-      
-      # Setup and build Angular frontend
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'npm'
-          cache-dependency-path: './Angular/package-lock.json'
+          # Remove the cache configuration to avoid the error
       
-      - name: Install Angular dependencies
+      - name: Install dependencies
         run: |
           cd Angular
-          npm ci
-      
-      # Update API URL to use GitHub Pages hosted backend API
-      - name: Update API URL for production
-        run: |
-          cd Angular/src/app
-          sed -i 's|http://localhost:5103/api/weather|https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/api/weather|g' weather.service.ts
+          npm install
       
       - name: Build Angular app
         run: |
           cd Angular
           npm run build -- --configuration production --base-href "/${{ github.event.repository.name }}/"
-      
-      # Combine backend and frontend for deployment
-      - name: Copy backend to dist
-        run: |
-          mkdir -p ./Angular/dist/angular/browser/api
-          cp -r ./WeatherApp_BE/publish/* ./Angular/dist/angular/browser/api/
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
